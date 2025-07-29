@@ -32,28 +32,28 @@
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Examples</h3>
                                     
-                                    <x-forms.text-input 
+                                    <x-forms.inputs.text-input 
                                         name="example_text" 
                                         label="Basic Text Input" 
                                         placeholder="Enter some text"
                                         helpText="This is a basic text input field"
                                     />
                                     
-                                    <x-forms.text-input 
+                                    <x-forms.inputs.text-input 
                                         name="required_text" 
                                         label="Required Field" 
                                         placeholder="This field is required"
                                         required
                                     />
                                     
-                                    <x-forms.text-input 
+                                    <x-forms.inputs.text-input 
                                         name="error_text" 
                                         label="Field with Error" 
                                         placeholder="This field has an error"
                                         error="This field is required and cannot be empty"
                                     />
                                     
-                                    <x-forms.text-input 
+                                    <x-forms.inputs.text-input 
                                         name="disabled_text" 
                                         label="Disabled Field" 
                                         placeholder="This field is disabled"
@@ -63,7 +63,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.text-input 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.text-input 
     name="title" 
     label="Post Title" 
     placeholder="Enter post title"
@@ -82,7 +82,7 @@
                             </h2>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
-                                    <x-forms.textarea 
+                                    <x-forms.inputs.textarea 
                                         name="example_textarea" 
                                         label="Content Area" 
                                         placeholder="Write your content here..."
@@ -90,7 +90,7 @@
                                         helpText="Use this for longer text content"
                                     />
                                     
-                                    <x-forms.textarea 
+                                    <x-forms.inputs.textarea 
                                         name="large_textarea" 
                                         label="Large Textarea" 
                                         placeholder="Large text area..."
@@ -99,7 +99,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.textarea 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.textarea 
     name="content" 
     label="Post Content" 
     rows="8"
@@ -117,7 +117,7 @@
                             </h2>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
-                                    <x-forms.select 
+                                    <x-forms.inputs.select 
                                         name="example_select" 
                                         label="Post Status"
                                         :options="['draft' => 'Draft', 'published' => 'Published', 'archived' => 'Archived']"
@@ -125,7 +125,7 @@
                                         helpText="Select the current status of the post"
                                     />
                                     
-                                    <x-forms.select 
+                                    <x-forms.inputs.select 
                                         name="category_select" 
                                         label="Category"
                                         :options="['tech' => 'Technology', 'design' => 'Design', 'business' => 'Business']"
@@ -134,7 +134,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.select 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.select 
     name="status" 
     label="Status"
     :options="['draft' => 'Draft', 'published' => 'Published']"
@@ -152,20 +152,20 @@
                             </h2>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
-                                    <x-forms.checkbox 
+                                    <x-forms.inputs.checkbox 
                                         name="example_checkbox" 
                                         label="Featured Post"
                                         helpText="Mark this post as featured on the homepage"
                                     />
                                     
-                                    <x-forms.checkbox 
+                                    <x-forms.inputs.checkbox 
                                         name="checked_checkbox" 
                                         label="Pre-checked Option"
                                         checked
                                         helpText="This checkbox is checked by default"
                                     />
                                     
-                                    <x-forms.checkbox 
+                                    <x-forms.inputs.checkbox 
                                         name="required_checkbox" 
                                         label="Terms and Conditions"
                                         required
@@ -174,7 +174,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.checkbox 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.checkbox 
     name="is_featured" 
     label="Featured Post"
     helpText="Mark as featured"
@@ -191,14 +191,14 @@
                             </h2>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
-                                    <x-forms.radio-group 
+                                    <x-forms.inputs.radio-group 
                                         name="example_radio" 
                                         label="Content Type"
                                         :options="['article' => 'Article', 'tutorial' => 'Tutorial', 'news' => 'News']"
                                         helpText="Select the type of content you're creating"
                                     />
                                     
-                                    <x-forms.radio-group 
+                                    <x-forms.inputs.radio-group 
                                         name="priority_radio" 
                                         label="Priority Level"
                                         :options="['low' => 'Low', 'medium' => 'Medium', 'high' => 'High']"
@@ -207,7 +207,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.radio-group 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.radio-group 
     name="type" 
     label="Content Type"
     :options="['article' => 'Article', 'tutorial' => 'Tutorial']"
@@ -224,14 +224,14 @@
                             </h2>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
-                                    <x-forms.file-input 
+                                    <x-forms.inputs.file-input 
                                         name="example_file" 
                                         label="Featured Image"
                                         accept="image/*"
                                         helpText="Upload a featured image for your post"
                                     />
                                     
-                                    <x-forms.file-input 
+                                    <x-forms.inputs.file-input 
                                         name="document_file" 
                                         label="Document Upload"
                                         accept=".pdf,.doc,.docx"
@@ -240,7 +240,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.file-input 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.file-input 
     name="featured_image" 
     label="Featured Image"
     accept="image/*"
@@ -257,7 +257,7 @@
                             </h2>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
-                                    <x-forms.number-input 
+                                    <x-forms.inputs.number-input 
                                         name="example_number" 
                                         label="Order Number"
                                         placeholder="Enter a number"
@@ -266,7 +266,7 @@
                                         helpText="Enter a number between 1 and 100"
                                     />
                                     
-                                    <x-forms.number-input 
+                                    <x-forms.inputs.number-input 
                                         name="price_number" 
                                         label="Price"
                                         placeholder="0.00"
@@ -277,7 +277,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.number-input 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.number-input 
     name="price" 
     label="Price"
     min="0"
@@ -295,13 +295,13 @@
                             </h2>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
-                                    <x-forms.date-input 
+                                    <x-forms.inputs.date-input 
                                         name="example_date" 
                                         label="Publication Date"
                                         helpText="When should this post be published?"
                                     />
                                     
-                                    <x-forms.date-input 
+                                    <x-forms.inputs.date-input 
                                         name="required_date" 
                                         label="Event Date"
                                         required
@@ -310,7 +310,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.date-input 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.date-input 
     name="published_at" 
     label="Publication Date"
     :value="old('published_at')"
@@ -327,14 +327,14 @@
                             </h2>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
-                                    <x-forms.email-input 
+                                    <x-forms.inputs.email-input 
                                         name="example_email" 
                                         label="Email Address"
                                         placeholder="user@example.com"
                                         helpText="Enter a valid email address"
                                     />
                                     
-                                    <x-forms.email-input 
+                                    <x-forms.inputs.email-input 
                                         name="required_email" 
                                         label="Contact Email"
                                         placeholder="contact@company.com"
@@ -343,7 +343,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.email-input 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.email-input 
     name="email" 
     label="Email Address"
     placeholder="user@example.com"
@@ -360,14 +360,14 @@
                             </h2>
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                                 <div>
-                                    <x-forms.password-input 
+                                    <x-forms.inputs.password-input 
                                         name="example_password" 
                                         label="Password"
                                         placeholder="Enter your password"
                                         helpText="Password must be at least 8 characters"
                                     />
                                     
-                                    <x-forms.password-input 
+                                    <x-forms.inputs.password-input 
                                         name="no_toggle_password" 
                                         label="Password (No Toggle)"
                                         placeholder="Enter password"
@@ -377,7 +377,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.password-input 
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.password-input 
     name="password" 
     label="Password"
     placeholder="Enter password"
@@ -388,51 +388,163 @@
                             </div>
                         </section>
 
+                        <!-- WYSIWYG Editor -->
+                        <section>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
+                                WYSIWYG Editor
+                            </h2>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Examples</h3>
+                                    
+                                    <x-forms.inputs.wysiwyg-editor 
+                                        name="example_wysiwyg" 
+                                        label="Post Content" 
+                                        placeholder="Write your content here..."
+                                        helpText="Use the toolbar to format your content"
+                                        toolbar="full"
+                                        height="300px"
+                                    >
+                                        <p>You can start with some <strong>initial content</strong> here!</p>
+                                    </x-forms.inputs.wysiwyg-editor>
+                                    
+                                    <x-forms.inputs.wysiwyg-editor 
+                                        name="basic_wysiwyg" 
+                                        label="Basic Editor" 
+                                        placeholder="Simple editing..."
+                                        toolbar="basic"
+                                        height="200px"
+                                        helpText="This editor has basic formatting options only"
+                                    />
+                                    
+                                    <x-forms.inputs.wysiwyg-editor 
+                                        name="required_wysiwyg" 
+                                        label="Required Content" 
+                                        placeholder="This field is required"
+                                        required
+                                        height="250px"
+                                    />
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.inputs.wysiwyg-editor 
+    name="content" 
+    label="Post Content" 
+    placeholder="Write your content..."
+    toolbar="full"
+    height="300px"
+    required
+    :error="$errors->first('content')"
+&gt;
+    {{ old('content') }}
+&lt;/x-forms.inputs.wysiwyg-editor&gt;</code></pre>
+                                    
+                                    <div class="mt-4">
+                                        <h4 class="text-md font-medium mb-2 text-gray-700 dark:text-gray-300">Toolbar Options</h4>
+                                        <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                            <li><code>toolbar="full"</code> - All formatting options</li>
+                                            <li><code>toolbar="basic"</code> - Essential formatting only</li>
+                                            <li><code>toolbar="[...]"</code> - Custom toolbar array</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
                         <!-- Form Container -->
                         <section>
                             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
                                 Form Container
                             </h2>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                <div>
-                                    <x-forms.form 
-                                        action="#"
-                                        method="POST"
-                                        title="Example Form"
-                                        description="This is an example of the form container component."
-                                        submitText="Save Changes"
-                                        cancelText="Cancel"
-                                        cancelUrl="#"
-                                    >
-                                        <x-forms.text-input 
-                                            name="demo_title" 
-                                            label="Title" 
-                                            placeholder="Enter title"
-                                        />
-                                        
-                                        <x-forms.select 
-                                            name="demo_status" 
-                                            label="Status"
-                                            :options="['draft' => 'Draft', 'published' => 'Published']"
-                                        />
-                                        
-                                        <x-forms.checkbox 
-                                            name="demo_featured" 
-                                            label="Featured"
-                                        />
-                                    </x-forms.form>
+                            <div class="space-y-8">
+                                
+                                <!-- Simple Form Example -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div>
+                                        <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Simple Form (Title Only)</h3>
+                                        <x-forms.form 
+                                            action="#"
+                                            method="POST"
+                                            title="Login"
+                                            :showButtons="false"
+                                        >
+                                            <x-forms.inputs.email-input 
+                                                name="demo_email" 
+                                                label="Email" 
+                                                placeholder="Enter your email"
+                                            />
+                                            
+                                            <x-forms.inputs.password-input 
+                                                name="demo_password" 
+                                                label="Password"
+                                                placeholder="Enter your password"
+                                                :showToggle="true"
+                                            />
+                                            
+                                            <div class="flex justify-end">
+                                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
+                                                    Login
+                                                </button>
+                                            </div>
+                                        </x-forms.form>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
+                                        <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.form 
+    action="{{ route('login') }}" 
+    method="POST"
+    title="Login"
+    :showButtons="false"
+&gt;
+    &lt;!-- Form inputs here --&gt;
+&lt;/x-forms.form&gt;</code></pre>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
-                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.form 
+
+                                <!-- Complex Form Example -->
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div>
+                                        <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Complex Form (Title + Description)</h3>
+                                        <x-forms.form 
+                                            action="#"
+                                            method="POST"
+                                            title="Create Post"
+                                            description="Fill out the form below to create a new blog post for your website."
+                                            submitText="Create Post"
+                                            cancelText="Cancel"
+                                            cancelUrl="#"
+                                        >
+                                            <x-forms.inputs.text-input 
+                                                name="demo_title" 
+                                                label="Title" 
+                                                placeholder="Enter post title"
+                                            />
+                                            
+                                            <x-forms.inputs.select 
+                                                name="demo_status" 
+                                                label="Status"
+                                                :options="['draft' => 'Draft', 'published' => 'Published']"
+                                            />
+                                            
+                                            <x-forms.inputs.checkbox 
+                                                name="demo_featured" 
+                                                label="Featured Post"
+                                            />
+                                        </x-forms.form>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
+                                        <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-forms.form 
     action="{{ route('posts.store') }}" 
     method="POST"
     title="Create Post"
+    description="Fill out the form below to create a new blog post."
     submitText="Create Post"
     cancelUrl="{{ route('posts.index') }}"
 &gt;
     &lt;!-- Form inputs here --&gt;
 &lt;/x-forms.form&gt;</code></pre>
+                                    </div>
                                 </div>
                             </div>
                         </section>

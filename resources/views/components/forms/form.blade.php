@@ -13,36 +13,36 @@
 ])
 
 <div class="max-w-4xl mx-auto">
-    @if($title || $description)
+    @if($title && $description)
         <div class="mb-8">
-            @if($title)
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                    {{ $title }}
-                </h1>
-            @endif
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                {{ $title }}
+            </h1>
             
-            @if($description)
-                <p class="text-lg text-gray-600 dark:text-gray-400">
-                    {{ $description }}
-                </p>
-            @endif
+            <p class="text-lg text-gray-600 dark:text-gray-400">
+                {{ $description }}
+            </p>
         </div>
     @endif
 
     <div class="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
-        <form 
+        @if($title && !$description)
+            <div class="px-6 pt-6 pb-2">
+                <h2 class="text-2xl font-bold text-center text-gray-900 dark:text-white">{{ $title }}</h2>
+            </div>
+        @endif
+        
+        <form
             action="{{ $action }}" 
             method="{{ $method === 'GET' ? 'GET' : 'POST' }}"
             @if($enctype) enctype="{{ $enctype }}" @endif
             {{ $attributes->except(['action', 'method', 'enctype', 'title', 'description', 'submitText', 'cancelText', 'cancelUrl', 'showButtons', 'submitClass', 'cancelClass']) }}
-        >
+        >   
             @if($method !== 'GET' && $method !== 'POST')
                 @method($method)
             @endif
             
-            @if($method !== 'GET')
-                @csrf
-            @endif
+            @csrf
 
             <div class="p-6 space-y-6">
                 {{ $slot }}
@@ -62,7 +62,7 @@
                         
                         <button 
                             type="submit" 
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors {{ $submitClass }}"
+                            class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150 {{ $submitClass }}"
                         >
                             {{ $submitText }}
                         </button>

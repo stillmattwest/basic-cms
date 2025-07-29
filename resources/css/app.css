@@ -1,3 +1,101 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* WYSIWYG Editor Dark Mode Styles */
+/* Dark mode Quill styling */
+/* Dark mode Quill styling */
+.ql-toolbar {
+    background: #1f2937;
+    border: 1px solid #374151;
+    border-radius: 8px 8px 0 0;
+}
+
+.ql-container {
+    background: #111827;
+    border: 1px solid #374151;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    color: #f9fafb;
+}
+
+.ql-editor {
+    color: #f9fafb;
+    background: #111827;
+    min-height: 300px;
+}
+
+/* Toolbar button styling - much lighter */
+.ql-toolbar .ql-stroke {
+    stroke: #e5e7eb;
+}
+
+.ql-toolbar .ql-fill {
+    fill: #e5e7eb;
+}
+
+.ql-toolbar .ql-picker-label {
+    color: #e5e7eb;
+}
+
+/* Hover states - bright white */
+.ql-toolbar button:hover .ql-stroke {
+    stroke: #ffffff;
+}
+
+.ql-toolbar .ql-picker-options {
+    background: #1f2937 !important;
+    border: 1px solid #374151 !important;
+}
+
+.ql-toolbar .ql-picker-item {
+    color: #f9fafb !important;
+}
+
+.ql-toolbar .ql-picker-item:hover {
+    background: #374151 !important;
+}
+
+.ql-toolbar button:hover .ql-fill {
+    fill: #ffffff;
+}
+
+.ql-toolbar .ql-picker-label:hover {
+    color: #ffffff;
+}
+
+/* Active/selected states */
+.ql-toolbar button.ql-active .ql-stroke,
+.ql-toolbar .ql-picker-label.ql-active {
+    stroke: #60a5fa;
+    color: #60a5fa;
+}
+
+.ql-toolbar button.ql-active .ql-fill {
+    fill: #60a5fa;
+}
+
+/* Dropdown menus */
+.ql-picker-options {
+    background: #1f2937;
+    border: 1px solid #374151;
+}
+
+.ql-picker-item {
+    color: #f9fafb;
+}
+
+.ql-picker-item:hover {
+    background: #b4bac3;
+}
+
+/* Placeholder text */
+.ql-editor.ql-blank::before {
+    color:#b4bac3 !important;
+}
+
+/* Selection styling */
+.ql-editor ::selection {
+    background: #3b82f6;
+    color: white;
+}
