@@ -549,6 +549,251 @@
                             </div>
                         </section>
 
+                        <!-- Post Components -->
+                        <section>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
+                                Post Components
+                            </h2>
+                            
+                            <!-- Post Card -->
+                            <div class="mb-12">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Post Card</h3>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div>
+                                        <h4 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Examples</h4>
+                                        
+                                        @php
+                                            $samplePost = (object) [
+                                                'id' => 1,
+                                                'title' => 'Getting Started with Laravel Components',
+                                                'slug' => 'getting-started-with-laravel-components',
+                                                'excerpt' => 'Learn how to create reusable components in Laravel that will speed up your development process and keep your code clean.',
+                                                'content' => '<p>This is the full content of the post...</p>',
+                                                'status' => 'published',
+                                                'is_featured' => true,
+                                                'featured_image' => 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=400&fit=crop',
+                                                'featured_image_alt' => 'Code on computer screen',
+                                                'published_at' => \Carbon\Carbon::now()->subDays(2),
+                                                'created_at' => \Carbon\Carbon::now()->subDays(5),
+                                                'updated_at' => \Carbon\Carbon::now()->subDays(1),
+                                                'user' => (object) ['name' => 'John Doe']
+                                            ];
+                                            $samplePost2 = (object) [
+                                                'id' => 2,
+                                                'title' => 'Building Modern Interfaces',
+                                                'slug' => 'building-modern-interfaces',
+                                                'excerpt' => 'Tips and techniques for creating beautiful, responsive user interfaces.',
+                                                'content' => '<p>This is the full content...</p>',
+                                                'status' => 'draft',
+                                                'is_featured' => false,
+                                                'featured_image' => null,
+                                                'featured_image_alt' => null,
+                                                'published_at' => null,
+                                                'created_at' => \Carbon\Carbon::now()->subDays(1),
+                                                'updated_at' => \Carbon\Carbon::now()->subDays(1),
+                                                'user' => (object) ['name' => 'Jane Smith']
+                                            ];
+                                        @endphp
+                                        
+                                        <div class="space-y-6">
+                                            <div>
+                                                <h5 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Regular Post Card</h5>
+                                                <x-posts.post-card :post="$samplePost" />
+                                            </div>
+                                            
+                                            <div>
+                                                <h5 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Compact Post Card</h5>
+                                                <x-posts.post-card :post="$samplePost2" :compact="true" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h4>
+                                        <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-posts.post-card 
+    :post="$post"
+    :showExcerpt="true"
+    :showMeta="true" 
+    :showFeaturedImage="true"
+    :compact="false"
+/&gt;</code></pre>
+                                        
+                                        <div class="mt-4">
+                                            <h5 class="text-md font-medium mb-2 text-gray-700 dark:text-gray-300">Properties</h5>
+                                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                                <li><code>post</code> - The post object (required)</li>
+                                                <li><code>showExcerpt</code> - Show post excerpt (default: true)</li>
+                                                <li><code>showMeta</code> - Show meta information (default: true)</li>
+                                                <li><code>showFeaturedImage</code> - Show featured image (default: true)</li>
+                                                <li><code>compact</code> - Use compact layout (default: false)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Post Grid -->
+                            <div class="mb-12">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Post Grid</h3>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div>
+                                        <h4 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Example</h4>
+                                        
+                                        @php
+                                            $samplePosts = collect([$samplePost, $samplePost2]);
+                                        @endphp
+                                        
+                                        <x-posts.post-grid 
+                                            :posts="$samplePosts" 
+                                            columns="2"
+                                            :compact="true"
+                                        />
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h4>
+                                        <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-posts.post-grid 
+    :posts="$posts"
+    columns="3"
+    :showExcerpt="true"
+    :showMeta="true"
+    :compact="false"
+/&gt;</code></pre>
+                                        
+                                        <div class="mt-4">
+                                            <h5 class="text-md font-medium mb-2 text-gray-700 dark:text-gray-300">Properties</h5>
+                                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                                <li><code>posts</code> - Collection of posts (required)</li>
+                                                <li><code>columns</code> - Grid columns: 'auto', '1', '2', '3', '4' (default: 'auto')</li>
+                                                <li><code>showExcerpt</code> - Show excerpts (default: true)</li>
+                                                <li><code>showMeta</code> - Show meta info (default: true)</li>
+                                                <li><code>showFeaturedImage</code> - Show images (default: true)</li>
+                                                <li><code>compact</code> - Use compact cards (default: false)</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Full Post Display -->
+                            <div class="mb-12">
+                                <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Full Post Display</h3>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div>
+                                        <h4 class="text-lg font-semibsemibold mb-4 text-gray-800 dark:text-gray-200">Preview</h4>
+                                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900">
+                                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Full post component preview:</p>
+                                            <div class="text-xs text-gray-500 dark:text-gray-500">
+                                                <code>&lt;x-posts.post-full :post="$post" /&gt;</code>
+                                            </div>
+                                            <p class="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                                                (Too large to display here - see usage example)
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h4>
+                                        <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;x-posts.post-full 
+    :post="$post"
+    :showMeta="true"
+    :showActions="false"
+/&gt;</code></pre>
+                                        
+                                        <div class="mt-4">
+                                            <h5 class="text-md font-medium mb-2 text-gray-700 dark:text-gray-300">Properties</h5>
+                                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                                <li><code>post</code> - The post object (required)</li>
+                                                <li><code>showMeta</code> - Show meta information (default: true)</li>
+                                                <li><code>showActions</code> - Show edit/delete actions (default: false)</li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="mt-4">
+                                            <h5 class="text-md font-medium mb-2 text-gray-700 dark:text-gray-300">Features</h5>
+                                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                                <li>• Full-width featured image</li>
+                                                <li>• Status and featured badges</li>
+                                                <li>• Rich content with Tailwind Typography</li>
+                                                <li>• Optional edit/delete actions</li>
+                                                <li>• SEO meta information display</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Theme Toggle -->
+                        <section>
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 border-b border-gray-200 dark:border-gray-700 pb-2">
+                                Theme Toggle
+                            </h2>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Examples</h3>
+                                    
+                                    <div class="space-y-6">
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Default Size</h4>
+                                            <x-settings.theme-toggle />
+                                        </div>
+                                        
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Small Size</h4>
+                                            <x-settings.theme-toggle size="small" />
+                                        </div>
+                                        
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Large Size</h4>
+                                            <x-settings.theme-toggle size="large" />
+                                        </div>
+                                        
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">With Label</h4>
+                                            <x-settings.theme-toggle :showLabel="true" />
+                                        </div>
+                                        
+                                        <div>
+                                            <h4 class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Large with Label</h4>
+                                            <x-settings.theme-toggle size="large" :showLabel="true" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">Usage</h3>
+                                    <pre class="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto"><code class="text-gray-900 dark:text-white">&lt;!-- Basic toggle --&gt;
+&lt;x-settings.theme-toggle /&gt;
+
+&lt;!-- Small size --&gt;
+&lt;x-settings.theme-toggle size="small" /&gt;
+
+&lt;!-- Large with label --&gt;
+&lt;x-settings.theme-toggle 
+    size="large" 
+    :showLabel="true" 
+/&gt;</code></pre>
+                                    
+                                    <div class="mt-4">
+                                        <h5 class="text-md font-medium mb-2 text-gray-700 dark:text-gray-300">Properties</h5>
+                                        <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                            <li><code>size</code> - Toggle size: 'small', 'default', 'large' (default: 'default')</li>
+                                            <li><code>showLabel</code> - Show theme label text (default: false)</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="mt-4">
+                                        <h5 class="text-md font-medium mb-2 text-gray-700 dark:text-gray-300">Features</h5>
+                                        <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                            <li>• Persists theme preference in localStorage</li>
+                                            <li>• Respects system theme preference</li>
+                                            <li>• Smooth animations and transitions</li>
+                                            <li>• Accessibility support (ARIA labels)</li>
+                                            <li>• Custom event dispatching for other components</li>
+                                            <li>• Focus ring for keyboard navigation</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
                     </div>
                 </div>
             </div>

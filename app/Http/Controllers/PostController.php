@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -59,7 +60,11 @@ class PostController extends Controller
         }
 
         // Assign current user
-        $validated['user_id'] = auth()->id();
+        if (!Auth::check()) {
+            return back()->withErrors(['error' => 'You must be logged in to create a post.']);
+        }
+
+        $validated['user_id'] = Auth::id();
 
         $post = Post::create($validated);
 
@@ -73,7 +78,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $post->load('user');
-        return view('posts.show', compact('post'));
+        return view('posts', compact('post'));
     }
 
     /**

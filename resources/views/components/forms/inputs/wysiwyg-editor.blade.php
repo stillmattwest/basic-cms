@@ -50,7 +50,7 @@
     <div 
         x-data="wysiwygEditor('{{ $editorId }}', @js($toolbarConfig), '{{ $height }}', {{ $disabled ? 'true' : 'false' }})" 
         x-init="initEditor()"
-        class="border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden {{ $error ? 'border-red-500' : '' }}"
+        class="border border-gray-300 dark:border-gray-600 rounded-md overflow-hidden focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-primary-500 transition-colors duration-200 {{ $error ? 'border-red-500 focus-within:ring-red-500 focus-within:border-red-500' : '' }}"
     >
         <!-- Quill Editor Container -->
         <div x-ref="editor" style="height: {{ $height }};" class="bg-white dark:bg-gray-700" data-placeholder="{{ $placeholder }}"></div>

@@ -35,6 +35,11 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
 
+                        <!-- Theme Toggle -->
+                        <div class="px-4 py-2 border-b border-gray-100 dark:border-gray-600">
+                            <x-settings.theme-toggle size="small" :showLabel="true" />
+                        </div>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -88,6 +93,11 @@
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
                     </x-responsive-nav-link>
+
+                    <!-- Theme Toggle for Mobile -->
+                    <div class="px-4 py-3 border-t border-gray-200 dark:border-gray-600">
+                        <x-settings.theme-toggle size="small" :showLabel="true" />
+                    </div>
 
                     <!-- Authentication -->
                     <form method="POST" action="{{ route('logout') }}">

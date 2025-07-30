@@ -35,16 +35,27 @@ Alpine.data('wysiwygEditor', (editorId, toolbarConfig, height, disabled) => ({
             this.$refs.hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
         });
         
-        // Handle dark mode styling
-        this.applyDarkModeStyles();
+        // Apply initial theme
+        this.applyThemeStyles();
+        
+        // Listen for theme changes
+        window.addEventListener('theme-changed', (e) => {
+            this.applyThemeStyles();
+        });
+        
+        // Also listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+            setTimeout(() => this.applyThemeStyles(), 100); // Small delay to allow theme toggle to complete
+        });
     },
     
-    applyDarkModeStyles() {
-        if (document.documentElement.classList.contains('dark')) {
-            const editorContainer = this.$refs.editor;
-            const toolbar = editorContainer.previousElementSibling || editorContainer.parentElement.querySelector('.ql-toolbar');
-            
-            // Style the editor content area
+    applyThemeStyles() {
+        const isDark = document.documentElement.classList.contains('dark');
+        const editorContainer = this.$refs.editor;
+        const toolbar = editorContainer.previousElementSibling || editorContainer.parentElement.querySelector('.ql-toolbar');
+        
+        if (isDark) {
+            // Dark mode styles
             this.quill.root.style.color = '#f9fafb';
             this.quill.root.style.backgroundColor = '#374151';
             
@@ -52,6 +63,7 @@ Alpine.data('wysiwygEditor', (editorId, toolbarConfig, height, disabled) => ({
             if (toolbar && toolbar.classList.contains('ql-toolbar')) {
                 toolbar.style.backgroundColor = '#4b5563';
                 toolbar.style.borderColor = '#6b7280';
+                toolbar.style.borderBottomColor = '#6b7280';
                 
                 // Style toolbar buttons and controls
                 const buttons = toolbar.querySelectorAll('.ql-stroke');
@@ -68,15 +80,118 @@ Alpine.data('wysiwygEditor', (editorId, toolbarConfig, height, disabled) => ({
                 const pickers = toolbar.querySelectorAll('.ql-picker-label');
                 pickers.forEach(picker => {
                     picker.style.color = '#f9fafb';
+                    picker.style.borderColor = '#6b7280';
                 });
                 
-                // Style active states
+                // Style dropdown options
+                const options = toolbar.querySelectorAll('.ql-picker-options');
+                options.forEach(option => {
+                    option.style.backgroundColor = '#4b5563';
+                    option.style.borderColor = '#6b7280';
+                });
+                
+                const items = toolbar.querySelectorAll('.ql-picker-item');
+                items.forEach(item => {
+                    item.style.color = '#f9fafb';
+                });
+                
+                // Style active states with primary color (teal)
                 const activeButtons = toolbar.querySelectorAll('.ql-active');
                 activeButtons.forEach(button => {
-                    button.style.color = '#60a5fa';
+                    button.style.color = '#2dd4bf'; // primary-400
+                });
+                
+                // Style hover states
+                const allButtons = toolbar.querySelectorAll('button');
+                allButtons.forEach(button => {
+                    button.addEventListener('mouseenter', () => {
+                        if (!button.classList.contains('ql-active')) {
+                            button.style.backgroundColor = '#6b7280';
+                        }
+                    });
+                    button.addEventListener('mouseleave', () => {
+                        if (!button.classList.contains('ql-active')) {
+                            button.style.backgroundColor = '';
+                        }
+                    });
+                });
+            }
+        } else {
+            // Light mode styles
+            this.quill.root.style.color = '#111827';
+            this.quill.root.style.backgroundColor = '#ffffff';
+            
+            // Reset toolbar to default light styles
+            if (toolbar && toolbar.classList.contains('ql-toolbar')) {
+                toolbar.style.backgroundColor = '#ffffff';
+                toolbar.style.borderColor = '#d1d5db';
+                toolbar.style.borderBottomColor = '#d1d5db';
+                
+                // Reset toolbar buttons and controls
+                const buttons = toolbar.querySelectorAll('.ql-stroke');
+                buttons.forEach(button => {
+                    button.style.stroke = '#444';
+                });
+                
+                const fills = toolbar.querySelectorAll('.ql-fill');
+                fills.forEach(fill => {
+                    fill.style.fill = '#444';
+                });
+                
+                // Reset dropdown text
+                const pickers = toolbar.querySelectorAll('.ql-picker-label');
+                pickers.forEach(picker => {
+                    picker.style.color = '#444';
+                    picker.style.borderColor = '#d1d5db';
+                });
+                
+                // Reset dropdown options
+                const options = toolbar.querySelectorAll('.ql-picker-options');
+                options.forEach(option => {
+                    option.style.backgroundColor = '#ffffff';
+                    option.style.borderColor = '#d1d5db';
+                });
+                
+                const items = toolbar.querySelectorAll('.ql-picker-item');
+                items.forEach(item => {
+                    item.style.color = '#444';
+                });
+                
+                // Style active states with primary color (teal)
+                const activeButtons = toolbar.querySelectorAll('.ql-active');
+                activeButtons.forEach(button => {
+                    button.style.color = '#0d9488'; // primary-600
+                });
+                
+                // Style hover states
+                const allButtons = toolbar.querySelectorAll('button');
+                allButtons.forEach(button => {
+                    button.addEventListener('mouseenter', () => {
+                        if (!button.classList.contains('ql-active')) {
+                            button.style.backgroundColor = '#f3f4f6';
+                        }
+                    });
+                    button.addEventListener('mouseleave', () => {
+                        if (!button.classList.contains('ql-active')) {
+                            button.style.backgroundColor = '';
+                        }
+                    });
                 });
             }
         }
+        
+        // Style focus states for the editor
+        this.quill.root.addEventListener('focus', () => {
+            editorContainer.parentElement.style.borderColor = isDark ? '#2dd4bf' : '#0d9488'; // primary colors
+            editorContainer.parentElement.style.boxShadow = isDark 
+                ? '0 0 0 3px rgba(45, 212, 191, 0.1)' 
+                : '0 0 0 3px rgba(13, 148, 136, 0.1)';
+        });
+        
+        this.quill.root.addEventListener('blur', () => {
+            editorContainer.parentElement.style.borderColor = isDark ? '#6b7280' : '#d1d5db';
+            editorContainer.parentElement.style.boxShadow = 'none';
+        });
     }
 }));
 
