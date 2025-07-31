@@ -2,9 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ImageController;
 use Illuminate\Support\Facades\Route;
 
+// Public routes (no authentication required)
 Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('home', function () {
     return view('welcome');
 });
 
@@ -15,13 +21,20 @@ Route::get('component-library', function () {
 // Public post routes
 Route::get('/posts/{slug}', [PostController::class, 'showBySlug'])->name('posts.public.show');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
+// Protected routes (authentication required)
 Route::middleware('auth')->group(function () {
-    // Post management routes (authenticated users only)
+    // Dashboard
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware('verified')->name('dashboard');
+
+    // Post management routes
     Route::resource('posts', PostController::class);
+
+    // Image upload routes for WYSIWYG editor
+    Route::post('/images/upload', [ImageController::class, 'upload'])->name('images.upload');
+    Route::delete('/images/delete', [ImageController::class, 'delete'])->name('images.delete');
 
     // Admin routes
     Route::get('/admin/create-post', function () {
