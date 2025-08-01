@@ -146,6 +146,14 @@
                             readOnly: disabled
                         });
 
+                        // Register image handler
+                        const toolbarModule = this.quill.getModule('toolbar');
+                        if (toolbarModule) {
+                            toolbarModule.addHandler('image', () => {
+                                this.imageHandler();
+                            });
+                        }
+
                         // Set initial content
                         const hiddenInput = this.$refs.hiddenInput;
                         if (hiddenInput.value.trim()) {
@@ -341,6 +349,7 @@
                     document.head.appendChild(style);
                 },
 
+
                 decodeHtmlEntities(str) {
                     const textarea = document.createElement('textarea');
                     textarea.innerHTML = str;
@@ -389,6 +398,12 @@
                         const result = await response.json();
 
                         if (result.success) {
+                            // Auto-populate featured image field if empty
+                            const featuredImageInput = document.querySelector('input[name="featured_image"]');
+                            if (featuredImageInput && !featuredImageInput.value) {
+                                featuredImageInput.value = result.url;
+                            }
+
                             // Get current content as HTML and append image
                             const currentHTML = this.quill.root.innerHTML;
                             const currentLength = this.quill.getLength();

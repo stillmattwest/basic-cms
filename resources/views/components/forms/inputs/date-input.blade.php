@@ -142,12 +142,23 @@ document.addEventListener('alpine:init', () => {
 
         setInitialValue(value) {
             if (value) {
-                const date = new Date(value);
-                if (!isNaN(date.getTime())) {
+                // Handle YYYY-MM-DD format properly in local timezone
+                if (value.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                    const [year, month, day] = value.split('-').map(Number);
+                    const date = new Date(year, month - 1, day);
                     this.selectedDate = date;
                     this.currentDate = new Date(date);
                     this.displayValue = this.formatDate(date);
                     this.actualValue = this.formatDateForInput(date);
+                } else {
+                    // Fallback for other date formats
+                    const date = new Date(value);
+                    if (!isNaN(date.getTime())) {
+                        this.selectedDate = date;
+                        this.currentDate = new Date(date);
+                        this.displayValue = this.formatDate(date);
+                        this.actualValue = this.formatDateForInput(date);
+                    }
                 }
             }
         },
@@ -173,7 +184,9 @@ document.addEventListener('alpine:init', () => {
         },
 
         selectDate(dateString) {
-            const date = new Date(dateString);
+            // Create date from the YYYY-MM-DD string in local timezone
+            const [year, month, day] = dateString.split('-').map(Number);
+            const date = new Date(year, month - 1, day);
             this.selectedDate = date;
             this.displayValue = this.formatDate(date);
             this.actualValue = this.formatDateForInput(date);
@@ -199,7 +212,11 @@ document.addEventListener('alpine:init', () => {
         },
 
         formatDateForInput(date) {
-            return date.toISOString().split('T')[0];
+            // Use local timezone to avoid off-by-one day issues
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         },
 
         updateCalendar() {

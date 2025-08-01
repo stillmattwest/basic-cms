@@ -12,16 +12,33 @@
 
 <article class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow duration-200 {{ $compact ? 'p-4' : 'p-6' }}">
     @if($showFeaturedImage && $post->featured_image)
-        <div class="mb-4 {{ $compact ? '-mx-4 -mt-4' : '-mx-6 -mt-6' }}">
-            <img 
-                src="{{ $post->featured_image }}" 
-                alt="{{ $post->featured_image_alt ?? $post->title }}"
-                class="w-full {{ $compact ? 'h-32' : 'h-48' }} object-cover"
-            >
+        <div class="mb-4 {{ $compact ? '-mx-4 -mt-4' : '-mx-6 -mt-6' }} relative overflow-hidden rounded-t-lg">
+            <div class="relative {{ $compact ? 'h-40' : 'h-56' }} bg-gray-100 dark:bg-gray-700">
+                <img 
+                    src="{{ $post->featured_image }}" 
+                    alt="{{ $post->featured_image_alt ?? $post->title }}"
+                    class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    loading="lazy"
+                >
+                <!-- Subtle gradient overlay for better text readability if needed -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+                
+                <!-- Featured badge overlay if post is featured -->
+                @if($post->is_featured)
+                    <div class="absolute top-3 left-3">
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-featured-100/90 text-featured-800 backdrop-blur-sm">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                            Featured
+                        </span>
+                    </div>
+                @endif
+            </div>
         </div>
     @endif
 
-    @if($post->is_featured)
+    @if($post->is_featured && !($showFeaturedImage && $post->featured_image))
         <div class="mb-3">
             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-featured-100 text-featured-800 dark:bg-featured-900 dark:text-featured-200">
                 <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">

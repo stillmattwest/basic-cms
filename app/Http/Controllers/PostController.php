@@ -68,7 +68,7 @@ class PostController extends Controller
 
         $post = Post::create($validated);
 
-        return redirect('/')
+        return redirect()->route('posts.index')
             ->with('success', 'Post created successfully!');
     }
 
