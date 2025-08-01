@@ -51,8 +51,8 @@
 
     <div class="flex items-start justify-between {{ $compact ? 'mb-2' : 'mb-4' }}">
         <h2 class="{{ $compact ? 'text-lg' : 'text-xl' }} font-bold text-gray-900 dark:text-white leading-tight">
-            @if(isset($post->id) && is_object($post) && method_exists($post, 'getRouteKey'))
-                <a href="{{ route('posts.show', $post) }}" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+            @if(isset($post->slug) && $post->slug)
+                <a href="{{ route('posts.public.show', $post->slug) }}" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
                     {{ $post->title }}
                 </a>
             @else
@@ -97,9 +97,9 @@
                 </span>
             </div>
 
-            @if(isset($post->id) && is_object($post) && method_exists($post, 'getRouteKey'))
+            @if(isset($post->slug) && $post->slug)
                 <a 
-                    href="{{ route('posts.show', $post) }}" 
+                    href="{{ route('posts.public.show', $post->slug) }}" 
                     class="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-medium transition-colors duration-200"
                 >
                     Read more

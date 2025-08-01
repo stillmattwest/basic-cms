@@ -22,6 +22,12 @@
                                     Create New Post
                                 </a>
                             </div>
+                        @else
+                            <div class="text-right">
+                                <p class="text-sm text-gray-600 dark:text-gray-400">
+                                    <a href="{{ route('login') }}" class="text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-300 font-medium">Sign in</a> to create posts
+                                </p>
+                            </div>
                         @endauth
                     </div>
                 </div>
