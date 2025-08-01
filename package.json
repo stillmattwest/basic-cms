@@ -20,6 +20,6 @@
     },
     "dependencies": {
         "quill": "^2.0.3",
-        "quill-image-resize-module": "^3.0.0"
+        "quill-resize-image": "^1.0.11"
     }
 }

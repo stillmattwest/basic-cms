@@ -132,16 +132,26 @@
 
                 initEditor(editorId, toolbar, height, disabled, inputName) {
                     if (toolbar) {
+                        // Build modules configuration
+                        const modules = {
+                            toolbar,
+                            history: {
+                                delay: 2000,
+                                maxStack: 500,
+                                userOnly: true
+                            },
+                            resize: {
+                                locale: {},
+                                modules: ['Resize', 'DisplaySize', 'Toolbar']
+                            }
+                        };
+
+                        // Note: Image resize functionality can be added via CSS
+                        // Users can drag image corners to resize in most browsers
+
                         this.quill = new Quill(this.$refs.editor, {
                             theme: 'snow',
-                            modules: {
-                                toolbar,
-                                history: {
-                                    delay: 2000,
-                                    maxStack: 500,
-                                    userOnly: true
-                                }
-                            },
+                            modules: modules,
                             placeholder: this.$refs.editor.dataset.placeholder,
                             readOnly: disabled
                         });

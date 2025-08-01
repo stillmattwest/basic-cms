@@ -2,7 +2,11 @@ import './bootstrap';
 
 import Alpine from 'alpinejs';
 import Quill from 'quill';
+import QuillResizeImage from 'quill-resize-image';
 import 'quill/dist/quill.snow.css';
+
+// Register the resize module
+Quill.register('modules/resize', QuillResizeImage);
 
 // Make Quill available globally for the Alpine component
 window.Quill = Quill;
