@@ -169,6 +169,9 @@
                     const toolbar = this.quill.getModule('toolbar').container;
                     const editor = this.quill.root;
 
+                    // Add hover styles for toolbar buttons
+                    this.addHoverStyles();
+
                     if (this.isDark) {
                         // Dark mode styles
                         editor.style.color = '#f9fafb';
@@ -282,6 +285,60 @@
                         });
                         this.blurListenerAdded = true;
                     }
+                },
+
+                addHoverStyles() {
+                    // Create or update the style element for hover effects
+                    let styleId = 'wysiwyg-hover-styles';
+                    let existingStyle = document.getElementById(styleId);
+                    
+                    if (existingStyle) {
+                        existingStyle.remove();
+                    }
+
+                    const style = document.createElement('style');
+                    style.id = styleId;
+                    
+                    const hoverCSS = `
+                        .ql-toolbar .ql-formats button:hover {
+                            background-color: ${this.isDark ? '#14b8a6' : '#f0fdfa'} !important;
+                            border-radius: 3px !important;
+                            transition: background-color 0.2s ease-in-out !important;
+                        }
+                        
+                        .ql-toolbar .ql-formats button:hover .ql-stroke {
+                            stroke: ${this.isDark ? '#ffffff' : '#0d9488'} !important;
+                            transition: stroke 0.2s ease-in-out !important;
+                        }
+                        
+                        .ql-toolbar .ql-formats button:hover .ql-fill {
+                            fill: ${this.isDark ? '#ffffff' : '#0d9488'} !important;
+                            transition: fill 0.2s ease-in-out !important;
+                        }
+                        
+                        .ql-toolbar .ql-formats .ql-picker-label:hover {
+                            background-color: ${this.isDark ? '#14b8a6' : '#f0fdfa'} !important;
+                            color: ${this.isDark ? '#ffffff' : '#0d9488'} !important;
+                            border-radius: 3px !important;
+                            transition: all 0.2s ease-in-out !important;
+                        }
+                        
+                        .ql-toolbar .ql-formats button.ql-active {
+                            background-color: ${this.isDark ? '#0d9488' : '#14b8a6'} !important;
+                            border-radius: 3px !important;
+                        }
+                        
+                        .ql-toolbar .ql-formats button.ql-active .ql-stroke {
+                            stroke: #ffffff !important;
+                        }
+                        
+                        .ql-toolbar .ql-formats button.ql-active .ql-fill {
+                            fill: #ffffff !important;
+                        }
+                    `;
+                    
+                    style.textContent = hoverCSS;
+                    document.head.appendChild(style);
                 },
 
                 decodeHtmlEntities(str) {
