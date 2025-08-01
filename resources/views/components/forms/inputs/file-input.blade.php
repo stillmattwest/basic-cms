@@ -22,7 +22,7 @@
             type="file"
             {{ $disabled ? 'disabled' : '' }}
             @if($accept) accept="{{ $accept }}" @endif
-            {!! $attributes->merge(['class' => 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-gray-300 dark:file:bg-gray-600 dark:file:text-gray-200 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed' . ($error ? ' border-red-500' : '')]) !!}
+            {!! $attributes->merge(['class' => 'block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-primary-50 file:text-primary-700 hover:file:bg-primary-100 border border-gray-300 dark:border-gray-600 rounded-md dark:bg-gray-700 dark:text-gray-300 dark:file:bg-primary-800 dark:file:text-primary-200 disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed' . ($error ? ' border-red-500' : '')]) !!}
         />
     </div>
     
