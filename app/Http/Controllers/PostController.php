@@ -27,7 +27,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        return view('admin.create-post');
     }
 
     /**
@@ -68,7 +68,7 @@ class PostController extends Controller
 
         $post = Post::create($validated);
 
-        return redirect()->route('posts.show', $post)
+        return redirect('/')
             ->with('success', 'Post created successfully!');
     }
 
@@ -78,7 +78,7 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $post->load('user');
-        return view('posts', compact('post'));
+        return view('posts.post', compact('post'));
     }
 
     /**
@@ -89,7 +89,7 @@ class PostController extends Controller
         // Check if user can edit this post
         // $this->authorize('update', $post);
 
-        return view('posts.edit', compact('post'));
+        return view('admin.edit-post', compact('post'));
     }
 
     /**
@@ -156,6 +156,6 @@ class PostController extends Controller
             ->with('user')
             ->firstOrFail();
 
-        return view('posts.public', compact('post'));
+        return view('posts.post', compact('post'));
     }
 }
