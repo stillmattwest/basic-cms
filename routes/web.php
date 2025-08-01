@@ -18,10 +18,6 @@ Route::get('component-library', function () {
     return view('componentLibrary.index');
 })->name('component-library');
 
-// Public post routes
-Route::get('/posts/{slug}', [PostController::class, 'showBySlug'])->name('posts.public.show');
-
-
 // Protected routes (authentication required)
 Route::middleware('auth')->group(function () {
     // Dashboard
@@ -38,7 +34,7 @@ Route::middleware('auth')->group(function () {
 
     // Admin routes
     Route::get('/admin/create-post', function () {
-        return view('admin.create-post');
+        return view('posts.create-post');
     })->name('create-post');
 
     // Profile routes
@@ -46,5 +42,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Public post routes (must be after resource routes to avoid conflicts)
+Route::get('/posts/{slug}', [PostController::class, 'showBySlug'])
+    ->name('posts.public.show')
+    ->where('slug', '^(?!create$|[0-9]+$)[a-z0-9-]+$');
 
 require __DIR__.'/auth.php';

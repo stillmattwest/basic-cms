@@ -27,7 +27,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.create-post');
+        return view('posts.create-post');
     }
 
     /**
@@ -89,7 +89,7 @@ class PostController extends Controller
         // Check if user can edit this post
         // $this->authorize('update', $post);
 
-        return view('admin.edit-post', compact('post'));
+        return view('posts.edit-post', compact('post'));
     }
 
     /**
