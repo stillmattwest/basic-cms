@@ -171,7 +171,7 @@
                 
                 <div class="text-center mt-12">
                     <a 
-                        href="#" 
+                        href="{{ route('posts.index') }}" 
                         class="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 rounded-lg text-base font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200"
                     >
                         View All Posts

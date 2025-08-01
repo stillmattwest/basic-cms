@@ -112,7 +112,7 @@
         @endif
 
         <!-- Content -->
-        <div class="prose prose-lg dark:prose-invert max-w-none">
+        <div class="prose prose-lg dark:prose-invert max-w-none text-gray-900 dark:text-white">
             {!! $post->content !!}
         </div>
 
