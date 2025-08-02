@@ -113,7 +113,7 @@
 
         <!-- Content -->
         <div class="prose prose-lg dark:prose-invert max-w-none text-gray-900 dark:text-white [&_img]:mb-4 [&_img]:mx-4">
-            {!! $post->content !!}
+            {!! $post->safe_content !!}
         </div>
 
         <!-- SEO Meta (if present) -->

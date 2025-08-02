@@ -16,6 +16,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('user')
+            ->published()
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
@@ -48,8 +49,12 @@ class PostController extends Controller
             'is_featured' => 'boolean',
         ]);
 
-        // Generate slug from title
-        $validated['slug'] = Str::slug($validated['title']);
+        // Generate slug from title with additional sanitization
+        $cleanTitle = strip_tags($validated['title']); // Remove HTML tags
+        // Remove suspicious words before removing special chars
+        $cleanTitle = preg_replace('/(alert|script|eval|javascript|vbscript|onload|onerror)/i', '', $cleanTitle);
+        $cleanTitle = preg_replace('/[^\w\s-]/', '', $cleanTitle); // Remove special chars except word chars, spaces, hyphens
+        $validated['slug'] = Str::slug($cleanTitle);
 
         // Ensure slug is unique
         $originalSlug = $validated['slug'];
@@ -57,6 +62,11 @@ class PostController extends Controller
         while (Post::where('slug', $validated['slug'])->exists()) {
             $validated['slug'] = $originalSlug . '-' . $counter;
             $counter++;
+        }
+
+        // Set published_at if status is published
+        if ($validated['status'] === 'published' && !isset($validated['published_at'])) {
+            $validated['published_at'] = now();
         }
 
         // Assign current user
@@ -115,7 +125,11 @@ class PostController extends Controller
 
         // Update slug if title changed
         if ($validated['title'] !== $post->title) {
-            $validated['slug'] = Str::slug($validated['title']);
+            $cleanTitle = strip_tags($validated['title']); // Remove HTML tags
+            // Remove suspicious words before removing special chars
+            $cleanTitle = preg_replace('/(alert|script|eval|javascript|vbscript|onload|onerror)/i', '', $cleanTitle);
+            $cleanTitle = preg_replace('/[^\w\s-]/', '', $cleanTitle); // Remove special chars except word chars, spaces, hyphens
+            $validated['slug'] = Str::slug($cleanTitle);
 
             // Ensure slug is unique (excluding current post)
             $originalSlug = $validated['slug'];
@@ -126,9 +140,14 @@ class PostController extends Controller
             }
         }
 
+        // Set published_at if changing to published and not already set
+        if ($validated['status'] === 'published' && !$post->published_at && !isset($validated['published_at'])) {
+            $validated['published_at'] = now();
+        }
+
         $post->update($validated);
 
-        return redirect()->route('posts.show', $post)
+        return redirect()->route('posts.index')
             ->with('success', 'Post updated successfully!');
     }
 

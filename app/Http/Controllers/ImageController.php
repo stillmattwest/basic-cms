@@ -22,10 +22,26 @@ class ImageController extends Controller
     {
         try {
             $request->validate([
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
+                'image' => 'required|file|mimes:jpeg,png,jpg,gif,webp|max:2048'
             ]);
-
+            
             $image = $request->file('image');
+            
+            // Additional security checks
+            $allowedMimes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/webp'];
+            $allowedExtensions = ['jpeg', 'jpg', 'png', 'gif', 'webp'];
+            
+            if (!in_array($image->getMimeType(), $allowedMimes)) {
+                throw ValidationException::withMessages([
+                    'file' => 'Invalid file type. Only images are allowed.'
+                ]);
+            }
+            
+            if (!in_array(strtolower($image->getClientOriginalExtension()), $allowedExtensions)) {
+                throw ValidationException::withMessages([
+                    'file' => 'Invalid file extension.'
+                ]);
+            }
             
             // Generate unique filename
             $filename = Str::uuid() . '.' . $image->getClientOriginalExtension();
@@ -74,8 +90,26 @@ class ImageController extends Controller
         ]);
 
         try {
-            if (Storage::disk('public')->exists($request->path)) {
-                Storage::disk('public')->delete($request->path);
+            $path = $request->path;
+            
+            // Security: Only allow deletion of files in posts/images directory
+            if (!str_starts_with($path, 'posts/images/')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid file path'
+                ], 422);
+            }
+            
+            // Prevent path traversal attacks
+            if (str_contains($path, '..') || str_contains($path, '/./') || str_contains($path, '\\\\')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid file path'
+                ], 422);
+            }
+            
+            if (Storage::disk('public')->exists($path)) {
+                Storage::disk('public')->delete($path);
                 
                 return response()->json([
                     'success' => true,

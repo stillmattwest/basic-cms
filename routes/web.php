@@ -26,18 +26,15 @@ Route::get('/posts/{slug}', [PostController::class, 'showBySlug'])
 
 // Protected routes (authentication required)
 Route::middleware('auth')->group(function () {
-    // Dashboard
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware('verified')->name('dashboard');
-
     // Post management routes (except index and public show)
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
-    Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+    Route::get('/posts/{post}', [PostController::class, 'show'])
+        ->name('posts.show')
+        ->where('post', '[0-9]+');
 
     // Image upload routes for WYSIWYG editor
     Route::post('/images/upload', [ImageController::class, 'upload'])->name('images.upload');
