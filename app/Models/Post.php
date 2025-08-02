@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use HTMLPurifier;
+use HTMLPurifier_Config;
 
 class Post extends Model
 {
@@ -35,13 +37,6 @@ class Post extends Model
         'is_featured' => 'boolean',
     ];
 
-    /**
-     * Get the route key for the model.
-     */
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
 
     /**
      * Relationship: Post belongs to a User
@@ -105,5 +100,21 @@ class Post extends Model
     public function getUrlAttribute(): string
     {
         return route('posts.public.show', $this->slug);
+    }
+
+    /**
+     * Accessor: Get sanitized HTML content
+     */
+    public function getSafeContentAttribute(): string
+    {
+        $config = HTMLPurifier_Config::createDefault();
+        
+        // Allow common HTML tags but remove dangerous ones
+        $config->set('HTML.Allowed', 'p,br,strong,em,u,ol,ul,li,a[href],img[src|alt|width|height],h1,h2,h3,h4,h5,h6,blockquote,code,pre');
+        $config->set('HTML.AllowedAttributes', 'href,src,alt,width,height');
+        $config->set('AutoFormat.RemoveEmpty', true);
+        
+        $purifier = new HTMLPurifier($config);
+        return $purifier->purify($this->content);
     }
 }
