@@ -30,6 +30,7 @@
             [['color' => []], ['background' => []]],
             [['list' => 'ordered'], ['list' => 'bullet']],
             ['blockquote', 'code-block'],
+            [['code-language' => ['text', 'javascript', 'php', 'html', 'css', 'python', 'sql', 'json', 'bash']]],
             ['link', 'image'],
             [['align' => []]],
             ['clean'],
@@ -99,6 +100,18 @@
                 isDark: false,
                 focusListenerAdded: false,
                 blurListenerAdded: false,
+                currentCodeLanguage: 'text',
+                languageOptions: {
+                    'text': 'Plain Text',
+                    'javascript': 'JavaScript', 
+                    'php': 'PHP',
+                    'html': 'HTML',
+                    'css': 'CSS',
+                    'python': 'Python',
+                    'sql': 'SQL',
+                    'json': 'JSON',
+                    'bash': 'Bash'
+                },
 
                 init(editorId, toolbar, height, disabled, inputName) {
                     this.initDarkModeTracking();
@@ -134,7 +147,14 @@
                     if (toolbar) {
                         // Build modules configuration
                         const modules = {
-                            toolbar,
+                            toolbar: {
+                                container: toolbar,
+                                handlers: {
+                                    'code-language': (value) => {
+                                        this.handleLanguageChange(value);
+                                    }
+                                }
+                            },
                             history: {
                                 delay: 2000,
                                 maxStack: 500,
@@ -163,6 +183,9 @@
                                 this.imageHandler();
                             });
                         }
+
+                        // Configure language picker options
+                        this.configureLanguagePicker();
 
                         // Set initial content
                         const hiddenInput = this.$refs.hiddenInput;
@@ -450,6 +473,117 @@
                         this.uploadingImage = false;
                         event.target.value = '';
                     }
+                },
+
+                configureLanguagePicker() {
+                    // Find the language picker in the toolbar
+                    const toolbar = this.quill.getModule('toolbar').container;
+                    const languagePicker = toolbar.querySelector('.ql-code-language');
+                    
+                    if (languagePicker) {
+                        // Set up the picker options
+                        const pickerOptions = languagePicker.querySelector('.ql-picker-options');
+                        if (pickerOptions) {
+                            pickerOptions.innerHTML = '';
+                            
+                            // Add language options
+                            Object.entries(this.languageOptions).forEach(([value, label]) => {
+                                const option = document.createElement('span');
+                                option.className = 'ql-picker-item';
+                                option.setAttribute('data-value', value);
+                                option.textContent = label;
+                                
+                                // Add click event listener for each option
+                                option.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    this.handleLanguageChange(value);
+                                    // Close the dropdown
+                                    languagePicker.classList.remove('ql-expanded');
+                                });
+                                
+                                pickerOptions.appendChild(option);
+                            });
+                            
+                            // Set default label
+                            const pickerLabel = languagePicker.querySelector('.ql-picker-label');
+                            if (pickerLabel) {
+                                pickerLabel.textContent = this.languageOptions[this.currentCodeLanguage];
+                                pickerLabel.setAttribute('data-value', this.currentCodeLanguage);
+                            }
+                        }
+                    }
+                },
+
+                handleLanguageChange(language) {
+                    this.currentCodeLanguage = language || 'text';
+                    this.updatePickerLabel();
+                    this.applyLanguageToSelection();
+                },
+
+                updatePickerLabel() {
+                    const toolbar = this.quill.getModule('toolbar').container;
+                    const languagePicker = toolbar.querySelector('.ql-code-language');
+                    if (languagePicker) {
+                        const pickerLabel = languagePicker.querySelector('.ql-picker-label');
+                        if (pickerLabel) {
+                            pickerLabel.textContent = this.languageOptions[this.currentCodeLanguage];
+                            pickerLabel.setAttribute('data-value', this.currentCodeLanguage);
+                        }
+                    }
+                },
+
+                applyLanguageToSelection() {
+                    // Apply language to all code blocks or current selection
+                    const selection = this.quill.getSelection();
+                    if (selection) {
+                        const format = this.quill.getFormat(selection);
+                        if (format['code-block']) {
+                            // User is in a code block, apply language to it
+                            this.updateCodeBlockLanguage(selection);
+                        } else {
+                            // Apply language to all code blocks as default for next code block
+                            this.updateAllCodeBlocks();
+                        }
+                    } else {
+                        // No selection, update all code blocks
+                        this.updateAllCodeBlocks();
+                    }
+                },
+
+                updateCodeBlockLanguage(selection) {
+                    // Get the DOM element for the specific code block
+                    const [block] = this.quill.getLine(selection.index);
+                    if (block && block.domNode && block.domNode.classList.contains('ql-code-block')) {
+                        this.applyLanguageClass(block.domNode);
+                        // Note: Syntax highlighting disabled during editing to prevent DOM conflicts
+                    }
+                },
+
+                updateAllCodeBlocks() {
+                    // Apply current language to all code blocks
+                    if (this.quill) {
+                        const codeBlocks = this.quill.root.querySelectorAll('.ql-code-block');
+                        codeBlocks.forEach(block => {
+                            this.applyLanguageClass(block);
+                        });
+                        // Note: Syntax highlighting disabled during editing to prevent DOM conflicts
+                    }
+                },
+
+                applyLanguageClass(block) {
+                    // Remove existing language classes
+                    block.className = block.className.replace(/language-\w+/g, '');
+                    // Add new language class
+                    if (this.currentCodeLanguage !== 'text') {
+                        block.classList.add(`language-${this.currentCodeLanguage}`);
+                    }
+                },
+
+                highlightCodeBlocks() {
+                    // DISABLED: Prism.js interferes with Quill's editing by modifying DOM structure
+                    // Syntax highlighting will be applied only when content is displayed, not during editing
+                    console.log('Syntax highlighting disabled during editing to prevent DOM conflicts');
                 }
             }))
         });

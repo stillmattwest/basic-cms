@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "quill": "^2.0.3",
-        "quill-resize-image": "^1.0.11"
+        "quill-resize-image": "^1.0.11",
+        "prismjs": "^1.29.0"
     }
 }
