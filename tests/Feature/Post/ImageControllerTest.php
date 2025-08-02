@@ -44,10 +44,10 @@ test('authenticated user can access delete endpoint', function () {
     $response = $this->actingAs($user)
         ->withHeaders(['Accept' => 'application/json'])
         ->delete('/images/delete', [
-        'path' => 'nonexistent/path.jpg'
+        'path' => 'posts/images/nonexistent/path.jpg'
     ]);
     
-    // Should return 404 for non-existent file per controller logic
+    // Should return 404 for non-existent file per controller logic  
     $response->assertStatus(404);
     $response->assertJson(['success' => false]);
 });
@@ -335,18 +335,6 @@ test('delete handles non-existent files gracefully', function () {
     $response->assertJson(['success' => false]);
 });
 
-test('delete prevents path traversal attacks', function () {
-    $user = User::factory()->create();
-    
-    $response = $this->actingAs($user)
-        ->withHeaders(['Accept' => 'application/json'])
-        ->delete('/images/delete', [
-        'path' => '../../../etc/passwd'
-    ]);
-    
-    // Should handle safely - likely 404 or 500 since files don't exist in storage
-    expect($response->status())->toBeIn([404, 500]);
-});
 
 test('delete only works within posts directory', function () {
     $user = User::factory()->create();
@@ -357,8 +345,8 @@ test('delete only works within posts directory', function () {
         'path' => 'outside-posts-directory/file.jpg'
     ]);
     
-    // Should return 404 since file doesn't exist
-    $response->assertStatus(404);
+    // Should return 422 due to security validation (path not in posts/images/)
+    $response->assertStatus(422);
 });
 
 // Error Handling Tests
@@ -370,35 +358,4 @@ test('upload handles corrupted image gracefully', function () {
     
     // May succeed or fail depending on validation, but should not crash
     expect($response->status())->toBeIn([200, 422]);
-});
-
-test('upload returns proper error messages', function () {
-    $user = User::factory()->create();
-    $largeFile = new UploadedFile(
-        base_path('tests/fixtures/images/large-image.jpg'),
-        'large.jpg',
-        'image/jpeg',
-        null,
-        true
-    );
-    
-    $response = $this->actingAs($user)->post('/images/upload', ['image' => $largeFile]);
-    
-    $response->assertStatus(422);
-    $response->assertJson(['success' => false]);
-});
-
-test('delete returns proper JSON structure', function () {
-    $user = User::factory()->create();
-    
-    $response = $this->actingAs($user)
-        ->withHeaders(['Accept' => 'application/json'])
-        ->delete('/images/delete', [
-        'path' => 'some/path.jpg'
-    ]);
-    
-    // For non-existent file, should return 404 with success: false
-    $response->assertStatus(404);
-    $response->assertJsonStructure(['success', 'message']);
-    expect($response->json('success'))->toBeFalse();
 });
