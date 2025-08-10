@@ -11,7 +11,7 @@ class QuillHelper
         }
 
         // First try the old pattern for existing content with ql-code-block-container
-        $pattern = '/<div class="ql-code-block-container"[^>]*>.*?<\/div>/s';
+        $pattern = '/<div class="ql-code-block-container"[^>]*>(?:[^<]*<div[^>]*>.*?<\/div>[^<]*)*<\/div>/s';
         $html = preg_replace_callback($pattern, function($matches) {
             $fullMatch = $matches[0];
             
@@ -44,7 +44,7 @@ class QuillHelper
 
         // Now handle standard Quill code-block format (consecutive divs within a parent div)
         // This matches patterns like: <div><div>line1</div><div>line2</div></div>
-        $pattern = '/<div>(\s*<div>[^<]*(?:<br[^>]*>)?[^<]*<\/div>\s*)+<\/div>/s';
+        $pattern = '/<div>(\s*<div>.*?<\/div>\s*)+<\/div>/s';
         
         return preg_replace_callback($pattern, function($matches) {
             $fullMatch = $matches[0];
@@ -55,8 +55,8 @@ class QuillHelper
                 return $fullMatch; // Not a code block, return as is
             }
             
-            // Extract all div content
-            preg_match_all('/<div>([^<]*(?:<br[^>]*>)?[^<]*)<\/div>/', $fullMatch, $matches);
+            // Extract all div content (including nested HTML)
+            preg_match_all('/<div>(.*?)<\/div>/', $fullMatch, $matches);
             
             $codeLines = [];
             foreach ($matches[1] as $line) {
@@ -73,8 +73,17 @@ class QuillHelper
             // If all lines are code-like (no paragraph content), treat as code block
             $codeText = implode("\n", $codeLines);
             
-            // Simple heuristic: if it contains programming patterns, treat as code
-            if (preg_match('/[{}();]/', $codeText) || count($codeLines) > 2) {
+            // Enhanced heuristics for code detection:
+            // 1. Contains programming characters
+            // 2. Contains PHP tags
+            // 3. Has 3+ lines (suggesting structured content)
+            // 4. Contains common code patterns
+            $hasCodeChars = preg_match('/[{}();]/', $codeText);
+            $hasPhpTags = preg_match('/<\?php/', $codeText);
+            $hasMultipleLines = count($codeLines) > 2;
+            $hasCodePatterns = preg_match('/\b(function|if|else|for|while|var|let|const|return|echo|print)\b/', $codeText);
+            
+            if ($hasCodeChars || $hasPhpTags || ($hasMultipleLines && $hasCodePatterns) || $hasMultipleLines) {
                 return '<pre><code>' . htmlspecialchars($codeText) . '</code></pre>';
             }
             
