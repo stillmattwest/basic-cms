@@ -113,7 +113,7 @@
 
         <!-- Content -->
         <div class="prose prose-lg dark:prose-invert max-w-none text-gray-900 dark:text-white [&_img]:mb-4 [&_img]:mx-4" id="post-content">
-            {!! $post->safe_content !!}
+            {!! \App\Helpers\QuillHelper::convertQuillCodeBlocks($post->safe_content) !!}
         </div>
 
         <!-- SEO Meta (if present) -->
@@ -142,61 +142,9 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const postContent = document.getElementById('post-content');
-    
-    if (postContent && typeof Prism !== 'undefined') {
-        // Find divs that contain only other divs (likely code blocks from Quill)
-        const potentialCodeBlocks = postContent.querySelectorAll('div > div');
-        let codeBlockGroups = new Set();
-        
-        potentialCodeBlocks.forEach(div => {
-            const parent = div.parentElement;
-            const siblingDivs = parent.querySelectorAll(':scope > div');
-            const hasOnlyDivChildren = siblingDivs.length > 0 && parent.children.length === siblingDivs.length;
-            const hasCodeLikeContent = parent.textContent.includes('{') || parent.textContent.includes(';') || parent.textContent.includes('function') || parent.textContent.includes('return');
-            
-            if (hasOnlyDivChildren && hasCodeLikeContent) {
-                codeBlockGroups.add(parent);
-            }
-        });
-        
-        // Convert each code block group to proper pre/code structure
-        codeBlockGroups.forEach((group) => {
-            try {
-                // Extract text content from all child divs
-                const lines = Array.from(group.children).map(div => div.textContent);
-                const codeText = lines.join('\n');
-                
-                // Create proper pre/code structure
-                const pre = document.createElement('pre');
-                const code = document.createElement('code');
-                
-                // Add language class - default to JavaScript for now
-                pre.className = 'language-javascript';
-                code.className = 'language-javascript';
-                code.textContent = codeText;
-                
-                pre.appendChild(code);
-                group.parentNode.replaceChild(pre, group);
-                
-                // Apply syntax highlighting
-                Prism.highlightElement(code);
-                
-            } catch (error) {
-                console.warn('Failed to convert code block:', error);
-            }
-        });
-        
-        // Also handle any existing proper code blocks
-        const existingCodeBlocks = postContent.querySelectorAll('pre[class*="language-"], .ql-code-block[class*="language-"]');
-        existingCodeBlocks.forEach((block) => {
-            try {
-                const codeElement = block.querySelector('code') || block;
-                Prism.highlightElement(codeElement);
-            } catch (error) {
-                console.warn('Failed to highlight existing code block:', error);
-            }
-        });
+    // Initialize highlight.js for all code blocks
+    if (typeof hljs !== 'undefined') {
+        hljs.highlightAll();
     }
 });
 </script>
