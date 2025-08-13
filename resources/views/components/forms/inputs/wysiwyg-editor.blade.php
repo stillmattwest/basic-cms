@@ -200,10 +200,11 @@
                     
                     const codeBlocks = this.quill.root.querySelectorAll('.ql-code-block');
                     codeBlocks.forEach(block => {
-                        // Remove any existing highlighting classes
+                        // Remove previous highlighting to ensure theme changes apply
+                        block.removeAttribute('data-highlighted');
                         block.className = 'ql-code-block';
                         
-                        // Apply syntax highlighting
+                        // Highlight with current theme
                         window.hljs.highlightElement(block);
                     });
                 },
@@ -251,6 +252,9 @@
 
                     const toolbar = this.quill.getModule('toolbar').container;
                     const editor = this.quill.root;
+
+                    // Re-highlight code blocks with new theme
+                    this.highlightCodeBlocks();
 
                     // Add hover styles for toolbar buttons
                     this.addHoverStyles();

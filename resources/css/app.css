@@ -58,115 +58,7 @@ input[type="radio"]:hover:not(:disabled) {
     }
 }
 
-/* WYSIWYG Editor Dark Mode Styles */
-/* Dark mode Quill styling */
-.ql-toolbar {
-    background: #1f2937;
-    border: 1px solid #374151;
-    border-radius: 8px 8px 0 0;
-}
-
-.ql-container {
-    background: #111827;
-    border: 1px solid #374151;
-    border-top: none;
-    border-radius: 0 0 8px 8px;
-    color: #f9fafb;
-}
-
-.ql-editor {
-    color: #f9fafb;
-    background: #111827;
-    min-height: 300px;
-}
-
-/* Toolbar button styling - much lighter */
-.ql-toolbar .ql-stroke {
-    stroke: #e5e7eb;
-}
-
-.ql-toolbar .ql-fill {
-    fill: #e5e7eb;
-}
-
-.ql-toolbar .ql-picker-label {
-    color: #e5e7eb;
-}
-
-/* Hover states - bright white */
-.ql-toolbar button:hover .ql-stroke {
-    stroke: #ffffff;
-}
-
-.ql-toolbar .ql-picker-options {
-    background: #1f2937 !important;
-    border: 1px solid #374151 !important;
-}
-
-.ql-toolbar .ql-picker-item {
-    color: #f9fafb !important;
-}
-
-.ql-toolbar .ql-picker-item:hover {
-    background: #374151 !important;
-}
-
-.ql-toolbar button:hover .ql-fill {
-    fill: #ffffff;
-}
-
-.ql-toolbar .ql-picker-label:hover {
-    color: #ffffff;
-}
-
-/* Active/selected states */
-.ql-toolbar button.ql-active .ql-stroke,
-.ql-toolbar .ql-picker-label.ql-active {
-    stroke: #60a5fa;
-    color: #60a5fa;
-}
-
-.ql-toolbar button.ql-active .ql-fill {
-    fill: #60a5fa;
-}
-
-/* Dropdown menus */
-.ql-picker-options {
-    background: #1f2937;
-    border: 1px solid #374151;
-}
-
-.ql-picker-item {
-    color: #f9fafb;
-}
-
-.ql-picker-item:hover {
-    background: #b4bac3;
-}
-
-/* Placeholder text */
-.ql-editor.ql-blank::before {
-    color:#b4bac3 !important;
-}
-
-/* Selection styling */
-.ql-editor ::selection {
-    background: #3b82f6;
-    color: white;
-}
-
-/* Prism.js Dark Mode Integration */
-.dark .ql-editor pre[class*="language-"] {
-    background: #1e293b !important;
-    color: #e2e8f0 !important;
-    border: 1px solid #374151;
-    border-radius: 6px;
-}
-
-.dark .ql-editor code[class*="language-"] {
-    background: #1e293b !important;
-    color: #e2e8f0 !important;
-}
+/* WYSIWYG Editor - Let JavaScript handle theme switching */
 
 /* Language selector dropdown styling */
 .ql-code-language {
@@ -183,129 +75,30 @@ input[type="radio"]:hover:not(:disabled) {
     overflow-y: auto;
 }
 
-/* Code Block Display Styling (for rendered content) */
+/* Simple fix for ql-ui select elements */
+select.ql-ui {
+    color: #374151 !important; /* Dark font color for light theme */
+    background-color: #ffffff !important; /* Light background for light theme */
+    border-color: #d1d5db !important;
+    right: 20px !important;
+    top: 6px !important;
+    font-size:1em;
+}
+
+.dark select.ql-ui {
+    color: #f9fafb !important; /* Light font color for dark theme */
+    background-color: #374151 !important; /* Dark background for dark theme */
+    border-color: #6b7280 !important;
+}
+
+/* Basic code block layout only - let Highlight.js handle colors */
 .prose pre[class*="language-"],
 .prose .ql-code-block {
-    margin: 1.5rem 0 !important;
-    padding: 1rem 1.25rem !important;
-    background: #f8fafc !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 8px !important;
-    border-left: 4px solid #0d9488 !important;
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', monospace !important;
-    font-size: 0.875rem !important;
-    line-height: 1.5 !important;
-    overflow-x: auto !important;
-}
-
-/* Dark mode code blocks */
-.dark .prose pre[class*="language-"],
-.dark .prose .ql-code-block {
-    background: #1e293b !important;
-    border-color: #334155 !important;
-    border-left-color: #14b8a6 !important;
-    color: #e2e8f0 !important;
-}
-
-/* Override ALL Prism defaults first */
-.prose pre[class*="language-"],
-.prose pre[class*="language-"] *,
-pre[class*="language-"],
-pre[class*="language-"] * {
-    background: none !important;
-    text-shadow: none !important;
-    border-radius: 0 !important;
-}
-
-/* Reset specific Prism elements */
-.prose pre[class*="language-"] .token {
-    background: none !important;
-    border: none !important;
-    border-radius: 0 !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-}
-
-/* Subtle Prism token styling - much cleaner integration */
-.prose pre[class*="language-"] .token.comment,
-.prose pre[class*="language-"] .token.prolog,
-.prose pre[class*="language-"] .token.doctype,
-.prose pre[class*="language-"] .token.cdata {
-    color: #6b7280 !important;
-    font-style: italic !important;
-}
-
-.dark .prose pre[class*="language-"] .token.comment,
-.dark .prose pre[class*="language-"] .token.prolog,
-.dark .prose pre[class*="language-"] .token.doctype,
-.dark .prose pre[class*="language-"] .token.cdata {
-    color: #9ca3af !important;
-}
-
-.prose pre[class*="language-"] .token.punctuation {
-    color: #374151 !important;
-}
-
-.dark .prose pre[class*="language-"] .token.punctuation {
-    color: #d1d5db !important;
-}
-
-.prose pre[class*="language-"] .token.property,
-.prose pre[class*="language-"] .token.tag,
-.prose pre[class*="language-"] .token.boolean,
-.prose pre[class*="language-"] .token.number,
-.prose pre[class*="language-"] .token.constant,
-.prose pre[class*="language-"] .token.symbol {
-    color: #0d9488 !important;
-    font-weight: 500 !important;
-}
-
-.prose pre[class*="language-"] .token.selector,
-.prose pre[class*="language-"] .token.attr-name,
-.prose pre[class*="language-"] .token.string,
-.prose pre[class*="language-"] .token.char,
-.prose pre[class*="language-"] .token.builtin {
-    color: #059669 !important;
-}
-
-.prose pre[class*="language-"] .token.operator,
-.prose pre[class*="language-"] .token.entity,
-.prose pre[class*="language-"] .token.url,
-.prose pre[class*="language-"] .token.variable {
-    color: #374151 !important;
-}
-
-.dark .prose pre[class*="language-"] .token.operator,
-.dark .prose pre[class*="language-"] .token.entity,
-.dark .prose pre[class*="language-"] .token.url,
-.dark .prose pre[class*="language-"] .token.variable {
-    color: #e5e7eb !important;
-}
-
-.prose pre[class*="language-"] .token.atrule,
-.prose pre[class*="language-"] .token.attr-value,
-.prose pre[class*="language-"] .token.function,
-.prose pre[class*="language-"] .token.class-name {
-    color: #4f46e5 !important;
-    font-weight: 500 !important;
-}
-
-.prose pre[class*="language-"] .token.keyword {
-    color: #7c3aed !important;
-    font-weight: 600 !important;
-}
-
-.prose pre[class*="language-"] .token.regex,
-.prose pre[class*="language-"] .token.important {
-    color: #dc2626 !important;
-}
-
-.prose pre[class*="language-"] .token.deleted {
-    color: #dc2626 !important;
-    background: rgba(220, 38, 38, 0.1) !important;
-}
-
-.prose pre[class*="language-"] .token.inserted {
-    color: #059669 !important;
-    background: rgba(5, 150, 105, 0.1) !important;
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    overflow-x: auto;
 }

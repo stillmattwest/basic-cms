@@ -141,11 +141,30 @@
 
 @push('scripts')
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize highlight.js for all code blocks
+function highlightAllCodeBlocks() {
     if (typeof hljs !== 'undefined') {
+        // Remove existing highlighting
+        document.querySelectorAll('pre code').forEach(block => {
+            // Reset classes to just the language class if it exists
+            const langClass = Array.from(block.classList).find(cls => cls.startsWith('language-'));
+            block.className = langClass || '';
+        });
+        
+        // Re-highlight all blocks
         hljs.highlightAll();
     }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initial highlighting
+    highlightAllCodeBlocks();
+    
+    // Re-highlight when theme changes
+    window.addEventListener('theme-changed', function() {
+        setTimeout(() => {
+            highlightAllCodeBlocks();
+        }, 50); // Small delay to ensure CSS has loaded
+    });
 });
 </script>
 @endpush
