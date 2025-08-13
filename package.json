@@ -19,6 +19,7 @@
         "vite": "^7.0.4"
     },
     "dependencies": {
+        "highlight.js": "^11.11.1",
         "quill": "^2.0.3",
         "quill-resize-image": "^1.0.11"
     }

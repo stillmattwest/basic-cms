@@ -134,20 +134,17 @@
                     if (toolbar) {
                         // Build modules configuration
                         const modules = {
-                            toolbar,
+                            toolbar: toolbar,
+                            syntax: {
+                                hljs: window.hljs
+                            },
                             history: {
                                 delay: 2000,
                                 maxStack: 500,
                                 userOnly: true
-                            },
-                            resize: {
-                                locale: {},
-                                modules: ['Resize', 'DisplaySize', 'Toolbar']
                             }
                         };
 
-                        // Note: Image resize functionality can be added via CSS
-                        // Users can drag image corners to resize in most browsers
 
                         this.quill = new Quill(this.$refs.editor, {
                             theme: 'snow',
@@ -170,15 +167,84 @@
                             this.quill.root.innerHTML = hiddenInput.value;
                         }
 
-                        // Update hidden input on content change
+                        // Update hidden input on content change - with cleanup
                         this.quill.on('text-change', () => {
-                            hiddenInput.value = this.quill.root.innerHTML;
+                            hiddenInput.value = this.getCleanedContent();
                         });
 
                         // Apply initial theme
                         this.applyThemeStyles();
+                        
+                        // Initialize syntax highlighting for code blocks
+                        this.initCodeBlockHighlighting();
                     }
+                },
 
+                initCodeBlockHighlighting() {
+                    // Listen for text changes to highlight code blocks
+                    this.quill.on('text-change', (delta, oldDelta, source) => {
+                        if (source === 'user') {
+                            // Small delay to ensure DOM updates
+                            setTimeout(() => {
+                                this.highlightCodeBlocks();
+                            }, 10);
+                        }
+                    });
+                    
+                    // Initial highlighting
+                    this.highlightCodeBlocks();
+                },
+                
+                highlightCodeBlocks() {
+                    if (!window.hljs) return;
+                    
+                    const codeBlocks = this.quill.root.querySelectorAll('.ql-code-block');
+                    codeBlocks.forEach(block => {
+                        // Remove previous highlighting to ensure theme changes apply
+                        block.removeAttribute('data-highlighted');
+                        block.className = 'ql-code-block';
+                        
+                        // Highlight with current theme
+                        window.hljs.highlightElement(block);
+                    });
+                },
+
+                // Clean content for storage - preserve Quill structure for QuillHelper
+                getCleanedContent() {
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = this.quill.root.innerHTML;
+                    
+                    // Remove all select elements (language dropdowns)
+                    const selects = tempDiv.querySelectorAll('select.ql-ui');
+                    selects.forEach(select => select.remove());
+                    
+                    // Remove any elements with contenteditable="false" (UI elements)
+                    const nonEditables = tempDiv.querySelectorAll('[contenteditable="false"]');
+                    nonEditables.forEach(element => element.remove());
+                    
+                    // Clean up highlight.js markup but preserve the basic structure QuillHelper expects
+                    const codeBlocks = tempDiv.querySelectorAll('.ql-code-block');
+                    codeBlocks.forEach(block => {
+                        // Get the plain text content
+                        const plainText = block.textContent || block.innerText || '';
+                        
+                        // Keep data-language if it exists for QuillHelper
+                        const language = block.getAttribute('data-language');
+                        
+                        // Replace with clean content
+                        block.innerHTML = plainText || '<br>';
+                        block.className = 'ql-code-block';
+                        
+                        // Preserve language for QuillHelper
+                        if (language) {
+                            block.setAttribute('data-language', language);
+                        }
+                        
+                        // Remove highlight.js attributes
+                        block.removeAttribute('data-highlighted');
+                    });
+                    
+                    return tempDiv.innerHTML;
                 },
 
                 applyThemeStyles() {
@@ -186,6 +252,9 @@
 
                     const toolbar = this.quill.getModule('toolbar').container;
                     const editor = this.quill.root;
+
+                    // Re-highlight code blocks with new theme
+                    this.highlightCodeBlocks();
 
                     // Add hover styles for toolbar buttons
                     this.addHoverStyles();
@@ -434,8 +503,8 @@
                             // Set the new content
                             this.quill.root.innerHTML = newHTML;
 
-                            // Manually update the hidden input
-                            this.$refs.hiddenInput.value = this.quill.root.innerHTML;
+                            // Manually update the hidden input with cleaned content
+                            this.$refs.hiddenInput.value = this.getCleanedContent();
 
                             // Trigger text-change event to ensure consistency
                             this.quill.emitter.emit('text-change');
@@ -450,7 +519,8 @@
                         this.uploadingImage = false;
                         event.target.value = '';
                     }
-                }
+                },
+
             }))
         });
     </script>

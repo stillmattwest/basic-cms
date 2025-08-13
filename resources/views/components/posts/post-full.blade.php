@@ -112,8 +112,8 @@
         @endif
 
         <!-- Content -->
-        <div class="prose prose-lg dark:prose-invert max-w-none text-gray-900 dark:text-white [&_img]:mb-4 [&_img]:mx-4">
-            {!! $post->safe_content !!}
+        <div class="prose prose-lg dark:prose-invert max-w-none text-gray-900 dark:text-white [&_img]:mb-4 [&_img]:mx-4" id="post-content">
+            {!! \App\Helpers\QuillHelper::convertQuillCodeBlocks($post->safe_content) !!}
         </div>
 
         <!-- SEO Meta (if present) -->
@@ -138,3 +138,33 @@
         @endif
     </div>
 </article>
+
+@push('scripts')
+<script>
+function highlightAllCodeBlocks() {
+    if (typeof hljs !== 'undefined') {
+        // Remove existing highlighting
+        document.querySelectorAll('pre code').forEach(block => {
+            // Reset classes to just the language class if it exists
+            const langClass = Array.from(block.classList).find(cls => cls.startsWith('language-'));
+            block.className = langClass || '';
+        });
+        
+        // Re-highlight all blocks
+        hljs.highlightAll();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Initial highlighting
+    highlightAllCodeBlocks();
+    
+    // Re-highlight when theme changes
+    window.addEventListener('theme-changed', function() {
+        setTimeout(() => {
+            highlightAllCodeBlocks();
+        }, 50); // Small delay to ensure CSS has loaded
+    });
+});
+</script>
+@endpush

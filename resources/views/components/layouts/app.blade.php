@@ -11,17 +11,27 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Quill 2.0 CSS - Load before app.css -->
-        <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+        <!-- Highlight.js Theme (Dynamic) -->
+        <link rel="stylesheet" href="{{ asset('css/highlight/light.css') }}" id="hljs-theme">
+        
+        <script>
+        // Set correct initial theme before page loads
+        (function() {
+            const isDark = localStorage.getItem('theme') === 'dark' || 
+                          (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                const link = document.getElementById('hljs-theme');
+                if (link) {
+                    link.href = '{{ asset('css/highlight/dark.css') }}';
+                }
+            }
+        })();
+        </script>
         
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        
-        <!-- Quill 2.0 JS - Load before Alpine -->
-        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-        
-        <!-- Alpine.js -->
-        <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -34,5 +44,39 @@
         </div>
         
         @stack('scripts')
+        
+        <!-- Highlight.js Theme Switching -->
+        <script>
+            function updateHighlightTheme() {
+                const themeLink = document.getElementById('hljs-theme');
+                const isDark = document.documentElement.classList.contains('dark');
+                
+                if (themeLink) {
+                    const newHref = isDark 
+                        ? '{{ asset('css/highlight/dark.css') }}'
+                        : '{{ asset('css/highlight/light.css') }}';
+                    
+                    // Only update if the theme actually changed
+                    if (themeLink.href !== newHref) {
+                        themeLink.href = newHref;
+                    }
+                }
+            }
+            
+            // Initial theme setup
+            document.addEventListener('DOMContentLoaded', function() {
+                updateHighlightTheme();
+            });
+            
+            // Listen for theme changes from your theme toggle
+            window.addEventListener('theme-changed', function() {
+                updateHighlightTheme();
+            });
+            
+            // Handle page load with existing dark mode
+            if (document.documentElement.classList.contains('dark')) {
+                updateHighlightTheme();
+            }
+        </script>
     </body>
 </html>

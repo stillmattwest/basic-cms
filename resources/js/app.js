@@ -3,13 +3,21 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import Quill from 'quill';
 import QuillResizeImage from 'quill-resize-image';
+import hljs from 'highlight.js';
 import 'quill/dist/quill.snow.css';
+import 'highlight.js/styles/github.css';
+
+// Configure highlight.js for Quill
+hljs.configure({
+    languages: ['javascript', 'php', 'html', 'css', 'python', 'sql', 'json', 'bash']
+});
 
 // Register the resize module
 Quill.register('modules/resize', QuillResizeImage);
 
-// Make Quill available globally for the Alpine component
+// Make Quill and hljs available globally for the Alpine component
 window.Quill = Quill;
+window.hljs = hljs;
 
 // Register WYSIWYG editor Alpine component
 Alpine.data('wysiwygEditor', (editorId, toolbarConfig, height, disabled) => ({

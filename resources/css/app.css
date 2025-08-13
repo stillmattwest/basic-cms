@@ -58,99 +58,47 @@ input[type="radio"]:hover:not(:disabled) {
     }
 }
 
-/* WYSIWYG Editor Dark Mode Styles */
-/* Dark mode Quill styling */
-.ql-toolbar {
-    background: #1f2937;
-    border: 1px solid #374151;
-    border-radius: 8px 8px 0 0;
+/* WYSIWYG Editor - Let JavaScript handle theme switching */
+
+/* Language selector dropdown styling */
+.ql-code-language {
+    width: 120px !important;
 }
 
-.ql-container {
-    background: #111827;
-    border: 1px solid #374151;
-    border-top: none;
-    border-radius: 0 0 8px 8px;
-    color: #f9fafb;
+.ql-code-language .ql-picker-label {
+    font-size: 12px !important;
+    padding: 3px 8px !important;
 }
 
-.ql-editor {
-    color: #f9fafb;
-    background: #111827;
-    min-height: 300px;
+.ql-code-language .ql-picker-options {
+    max-height: 200px;
+    overflow-y: auto;
 }
 
-/* Toolbar button styling - much lighter */
-.ql-toolbar .ql-stroke {
-    stroke: #e5e7eb;
+/* Simple fix for ql-ui select elements */
+select.ql-ui {
+    color: #374151 !important; /* Dark font color for light theme */
+    background-color: #ffffff !important; /* Light background for light theme */
+    border-color: #d1d5db !important;
+    right: 20px !important;
+    top: 6px !important;
+    font-size:1em;
 }
 
-.ql-toolbar .ql-fill {
-    fill: #e5e7eb;
+.dark select.ql-ui {
+    color: #f9fafb !important; /* Light font color for dark theme */
+    background-color: #374151 !important; /* Dark background for dark theme */
+    border-color: #6b7280 !important;
 }
 
-.ql-toolbar .ql-picker-label {
-    color: #e5e7eb;
-}
-
-/* Hover states - bright white */
-.ql-toolbar button:hover .ql-stroke {
-    stroke: #ffffff;
-}
-
-.ql-toolbar .ql-picker-options {
-    background: #1f2937 !important;
-    border: 1px solid #374151 !important;
-}
-
-.ql-toolbar .ql-picker-item {
-    color: #f9fafb !important;
-}
-
-.ql-toolbar .ql-picker-item:hover {
-    background: #374151 !important;
-}
-
-.ql-toolbar button:hover .ql-fill {
-    fill: #ffffff;
-}
-
-.ql-toolbar .ql-picker-label:hover {
-    color: #ffffff;
-}
-
-/* Active/selected states */
-.ql-toolbar button.ql-active .ql-stroke,
-.ql-toolbar .ql-picker-label.ql-active {
-    stroke: #60a5fa;
-    color: #60a5fa;
-}
-
-.ql-toolbar button.ql-active .ql-fill {
-    fill: #60a5fa;
-}
-
-/* Dropdown menus */
-.ql-picker-options {
-    background: #1f2937;
-    border: 1px solid #374151;
-}
-
-.ql-picker-item {
-    color: #f9fafb;
-}
-
-.ql-picker-item:hover {
-    background: #b4bac3;
-}
-
-/* Placeholder text */
-.ql-editor.ql-blank::before {
-    color:#b4bac3 !important;
-}
-
-/* Selection styling */
-.ql-editor ::selection {
-    background: #3b82f6;
-    color: white;
+/* Basic code block layout only - let Highlight.js handle colors */
+.prose pre[class*="language-"],
+.prose .ql-code-block {
+    margin: 1.5rem 0;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', 'Consolas', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    overflow-x: auto;
 }
